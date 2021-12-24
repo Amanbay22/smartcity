@@ -6,12 +6,14 @@ import entities.Profile;
 import entities.Role;
 import services.ProfileService;
 
+import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
@@ -25,7 +27,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-//@Provider
+@Provider
 public class JWTAuthedFilter implements ContainerRequestFilter {
     @Context
     private ResourceInfo resourceInfo;
@@ -52,11 +54,11 @@ public class JWTAuthedFilter implements ContainerRequestFilter {
             try {
             token = token.split(" ")[1];
             payload = jwtService.valid(token);
-
             String[] parts = payload.split(",");
-            email = parts[0].split(":")[1].substring(1, parts[0].split(":")[1].length()-1);
-            password = parts[1].split(":")[1].substring(1,parts[0].split(":")[1].length()-1);
-
+            email = parts[0].split(":")[1];
+            email = email.substring(1, email.length()-1);
+            password = parts[1].split(":")[1];
+            password = password.substring(1, password.length()-1);
             } catch (Exception e) {
                 requestContext
                         .abortWith(Response.status(Response.Status.UNAUTHORIZED)
@@ -81,6 +83,7 @@ public class JWTAuthedFilter implements ContainerRequestFilter {
         boolean isAllowed = false;
 
         Profile profile = profileService.getProfileByEmailAndPassword(email, password);
+
 
         if (!(profile == null)) {
             Role role = profile.getRole();

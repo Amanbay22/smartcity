@@ -5,10 +5,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import java.util.*;
 
 
-@Stateless
+@ApplicationScoped
 public class JWTService {
 
     private List<String> validJWTTokens = new ArrayList();
@@ -20,7 +21,6 @@ public class JWTService {
         String token = Jwts.builder()
                 .claim("email", profile.getEmail())
                 .claim("password", profile.getPassword())
-                .claim("ROLE", profile.getRole())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000)).signWith(SignatureAlgorithm.HS512, encodedString ).compact();
         this.validJWTTokens.add(token);
@@ -34,7 +34,6 @@ public class JWTService {
 
         Base64.Decoder decoder = Base64.getDecoder();
         String[] chunks = token.split("\\.");
-        System.out.println(Arrays.toString(chunks));
         String header = new String(decoder.decode(chunks[0]));
         return new String(decoder.decode(chunks[1]));
     }

@@ -13,31 +13,32 @@ import services.ProfileService;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/admin")
 public class AdministrationController {
-    @EJB
+    @Inject
     private JWTService jwtService;
     @EJB
     private ProfileService profileService;
     @EJB
     private DistrictService districtService;
 
-//    @Context
-//    UriInfo uriInfo;
-//    @Context
-//    Request request;
-//    @Context
-//    HttpHeaders httpHeaders;
+    @Context
+    UriInfo uriInfo;
+    @Context
+    Request request;
+    @Context
+    HttpHeaders httpHeaders;
 
     ObjectMapper oM = new ObjectMapper().findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-//    @PermitAll
+    @PermitAll
     @Path("/getJWT")
     public Response JWTAuthorization(@FormParam("email") String email,
                                      @FormParam("password") String password) {
@@ -99,7 +100,7 @@ public class AdministrationController {
     }
 
     @GET
-//    @RolesAllowed({"USER"})
+    @RolesAllowed({"USER"})
     @Path("district/{id}")
     public Response getDistrictById(@PathParam("id") Long id)
     {
