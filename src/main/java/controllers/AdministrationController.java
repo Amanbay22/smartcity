@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import entities.District;
 import entities.Profile;
 import entities.Role;
+import log.Logged;
 import security.JWTService;
 import services.DistrictService;
 import services.ProfileService;
@@ -58,6 +59,7 @@ public class AdministrationController {
 
     @GET
     @Path("profile/{id}")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProfileById(@PathParam("id") Long id) {
         try {
@@ -76,6 +78,7 @@ public class AdministrationController {
 
     @POST
     @Path("profile/create")
+    @PermitAll
     public Response saveClient(@FormParam("first_name") String firstName,
                                @FormParam("last_name") String lastName,
                                @FormParam("phone") String phoneNumber,
@@ -102,6 +105,7 @@ public class AdministrationController {
     @GET
     @RolesAllowed({"USER"})
     @Path("district/{id}")
+    @Logged
     public Response getDistrictById(@PathParam("id") Long id)
     {
         try {
@@ -113,6 +117,7 @@ public class AdministrationController {
 
     @POST
     @Path("district/create")
+    @PermitAll
     public Response createDistrict(@FormParam("name") String name,
                                @FormParam("population") int population) {
 
