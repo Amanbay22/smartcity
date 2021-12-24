@@ -23,6 +23,5 @@ public class RequestLoggingFilter implements ContainerRequestFilter {
         data += "MEDIA_TYPE: " + requestContext.getMediaType() + "\n";
         data += "ENTITY_STREAM: " + requestContext.getEntityStream();
         CustomCache.setCache(data);
-        log.info(data);
     }
 }

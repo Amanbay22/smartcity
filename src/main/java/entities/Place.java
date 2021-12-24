@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,6 +29,13 @@ public class Place {
     @JoinColumn(name = "district_id")
     @JsonIgnore
     private District district;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "place")
-    private List<Vacancy> vacancy;
+
+    public Place(String placeName, String address, String type, double rating, String phone) {
+        this.placeName = placeName;
+        this.address = address;
+        this.type = type;
+        this.rating = BigDecimal.valueOf(BigDecimal.valueOf(rating).setScale(1, RoundingMode.HALF_UP).floatValue());
+        this.phone = phone;
+    }
+
 }

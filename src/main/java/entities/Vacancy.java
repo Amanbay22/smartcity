@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,18 +22,23 @@ public class Vacancy{
     private Long id;
     private String vacancyName;
     private String description;
-    private String phoneNumber;
-    private String email;
-    private BigDecimal priceFrom;
-    private BigDecimal priceTo;
-    @ManyToOne
-    @JoinColumn(name = "place_id")
-    @JsonIgnore
-    private Place place;
+    private int priceFrom;
+    private int priceTo;
+    private String companyName;
     @ManyToMany
     @JoinTable(
             name = "vacancy_jobseekers",
             joinColumns = @JoinColumn(name = "vacancy_id"),
             inverseJoinColumns = @JoinColumn(name = "jobseeker_id"))
+    @JsonIgnore
     private List<Jobseeker> jobseekers;
+
+    public Vacancy(String vacancyName, String description, int priceFrom, int priceTo, String companyName) {
+        this.vacancyName = vacancyName;
+        this.description = description;
+        this.priceFrom = priceFrom;
+        this.priceTo = priceTo;
+        this.companyName = companyName;
+        this.jobseekers = new ArrayList<>();
+    }
 }

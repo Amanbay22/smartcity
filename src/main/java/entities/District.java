@@ -33,4 +33,19 @@ public class District {
         this.places = new ArrayList<>();
         this.businessInformations = new ArrayList<>();
     }
+
+    public void addPlace(Place place) {
+        place.setDistrict(this);
+        places.add(place);
+    }
+
+    public void addProfile(Profile profile) {
+        profile.setDistrict(this);
+        profiles.add(profile);
+    }
+
+    public void addInfo(BusinessInformation info) {
+        info.setDistrict(this);
+        businessInformations.add(info);
+    }
 }

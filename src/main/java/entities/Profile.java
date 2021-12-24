@@ -20,16 +20,18 @@ public class Profile {
     private String lastName;
     private int age;
     @Enumerated(value = EnumType.STRING)
+    @JsonIgnore
     private Role role;
     private String email;
     private String phoneNumber;
+    @JsonIgnore
     private String password;
     @ManyToOne
     @JoinColumn(name = "district_id")
     @JsonIgnore
     private District district;
 
-    public Profile(String firstName, String lastName, int age, Role role, String email, String phoneNumber, String password, District district) {
+    public Profile(String firstName, String lastName, int age, Role role, String email, String phoneNumber, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -37,6 +39,5 @@ public class Profile {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.district = district;
     }
 }

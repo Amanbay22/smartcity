@@ -18,7 +18,5 @@ public class CustomCache {
             cache.put(new Element(cache.getSize(), data));
             System.out.println(cache.get(cache.getSize()-1));
         }
-
-
     }
 }

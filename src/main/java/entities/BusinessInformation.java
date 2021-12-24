@@ -27,10 +27,10 @@ public class BusinessInformation {
     private String description;
     private double price;
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdDate;
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
     private String phoneNumber;
     private String email;
@@ -38,4 +38,12 @@ public class BusinessInformation {
     @JoinColumn(name = "district_id")
     @JsonIgnore
     private District district;
+
+    public BusinessInformation(String type, String businessName, String description, String phoneNumber) {
+        this.type = type;
+        this.businessName = businessName;
+        this.description = description;
+        this.createdDate = LocalDate.now();
+        this.phoneNumber = phoneNumber;
+    }
 }

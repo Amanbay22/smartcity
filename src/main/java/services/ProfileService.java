@@ -1,6 +1,7 @@
 package services;
 
 import database.HibernateSessionFactoryUtil;
+import entities.District;
 import entities.Profile;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -14,7 +15,8 @@ import java.util.List;
 public class ProfileService {
     @EJB(name = "ProfileRepository")
     private BaseRepository<Profile> profileRepository;
-
+    @EJB
+    private BaseRepository<District> districtRepository;
     public Profile getProfileById(Long id) {
         return profileRepository.findById(id, HibernateSessionFactoryUtil.getSessionFactory().openSession());
     }
@@ -23,10 +25,12 @@ public class ProfileService {
         return profileRepository.findAll(HibernateSessionFactoryUtil.getSessionFactory().openSession());
     }
 
-    public void createNewProfile(Profile profile) {
+    public void createNewProfile(Profile profile, Long districtId) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
-        profileRepository.save(profile, session);
+        District byId = districtRepository.findById(districtId, session);
+        byId.addProfile(profile);
+        districtRepository.update(byId, session);
         tx1.commit();
         session.close();
     }
@@ -39,7 +43,7 @@ public class ProfileService {
         session.close();
     }
 
-    public void deleteCityById(Long id) {
+    public void deleteProfileById(Long id) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
         Profile profile = profileRepository.findById(id,session);
